@@ -15,8 +15,10 @@ void addToList(struct ZipCodeNode* zipCodeNode, struct Participant* participant)
     participantNode->next = NULL;
     participantNode->prev = NULL;
 
+    // If list is empty put the participant node as head
     if (zipCodeNode->participants == NULL) {
         zipCodeNode->participants = participantNode;
+        zipCodeNode->count++;
     } else {
         // Add the new participant node at the end of the list
         struct ParticipantArrayNode* temp = zipCodeNode->participants;
@@ -25,6 +27,7 @@ void addToList(struct ZipCodeNode* zipCodeNode, struct Participant* participant)
         }
         temp->next = participantNode;
         participantNode->prev = temp;
+        zipCodeNode->count++;
     }
 }
 
@@ -35,7 +38,7 @@ void changeVote(struct ZipCodeNode* zipCodeList, struct LinearHashTable* hashTab
             // Participant's vote is 'N', change it to 'Y'
             participant->vote = 'Y';
             hashTable->vote_count++;
-            printf("Changed vote of participant with PIN %d to 'Y'\n", key);
+            printf("%d marked 'Voted'\n", key);
 
             // Check if a corresponding zip code node exists
             struct ZipCodeNode* currentZipCodeNode = zipCodeList;
@@ -72,7 +75,7 @@ void changeVote(struct ZipCodeNode* zipCodeList, struct LinearHashTable* hashTab
             addToList(currentZipCodeNode, participant);
         } else if (participant->vote == 'Y') {
             // Participant's vote is already 'Y', print a message
-            printf("Participant with PIN %d already has a vote of 'Y'\n", key);
+            printf("Participant with PIN %d already has a voted\n", key);
         }
     } else {
         printf("Participant with PIN %d not found.\n", key);
@@ -91,12 +94,14 @@ void printZIPList(struct ZipCodeNode* zipCodeList) {
 
 void printPartZip(struct ZipCodeNode* zipCodeList, int zipCode) {
     struct ZipCodeNode* currentZipCodeNode = zipCodeList;
-
+    // Check the list
     while (currentZipCodeNode != NULL) {
+        // Find the zip code
         if (currentZipCodeNode->zip_code == zipCode) {
-            printf("Participants in ZIP Code %d:\n", zipCode);
+            printf("%d in ZIP Code %d:\n",currentZipCodeNode->count, zipCode);
 
             struct ParticipantArrayNode* currentParticipantArrayNode = currentZipCodeNode->participants;
+            // Print all the participants in the node
             while (currentParticipantArrayNode != NULL) {
                 for (int i = 0; i < currentParticipantArrayNode->count; i++) {
                     printf("PIN: %d, Last Name: %s, First Name: %s, Vote: %c\n",
@@ -142,3 +147,22 @@ void printZIPListDescending(struct ZipCodeNode* zipCodeList) {
     }
 }
 
+void freeZipCodeList(struct ZipCodeNode* zipCodeList) {
+    while (zipCodeList != NULL) {
+        struct ZipCodeNode* currentZipCodeNode = zipCodeList;
+        zipCodeList = zipCodeList->next; // Move to the next node
+
+        // Free the participants in the current zip code node
+        struct ParticipantArrayNode* participantNode = currentZipCodeNode->participants;
+        while (participantNode != NULL) {
+            struct ParticipantArrayNode* currentParticipantNode = participantNode;
+            participantNode = participantNode->next; // Move to the next participant node
+
+            // Free the participants array
+            free(currentParticipantNode);
+        }
+
+        // Free the current zip code node
+        free(currentZipCodeNode);
+    }
+}

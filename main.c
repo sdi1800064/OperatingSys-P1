@@ -66,10 +66,6 @@ int main(int argc, char** argv) {
 
     fclose(file);
 
-    //printf("The number of data inside of the hash table is %d\n", hashTable->size);
-
-    printOverflowBuckets(hashTable);
-
     // Interactive command processing loop
     char command[256];
     int searchPIN;
@@ -77,12 +73,12 @@ int main(int argc, char** argv) {
     printf(" 'l' <PIN>' to search\n");
     printf(" 'i' <PIN> <LNAME> <FNAME> <ZIP> to insert\n");
     printf(" 'm' <PIN> to change the vote\n");
-    printf(" 'bv' <FILENAME> to c 1001hange vote of participants included in file\n");
+    printf(" 'bv' <FILENAME> to change vote of participants included in file\n");
     printf(" 'v' to print the number of participants who have voted\n");
     printf(" 'perc' to print the percentage of participants who have voted\n");
     printf(" 'z <ZIP_CODE>' to print participants for a specific ZIP code\n");
     printf(" 'o' to print all zip codes in descending order\n");
-    printf(" 'q' to quit: ");
+    printf(" 'exit' to exit the program: ");
     while (1) {
 
         if (scanf("%s", command) != 1) {
@@ -90,9 +86,9 @@ int main(int argc, char** argv) {
             continue;
         }
 
-        if (strcmp(command, "q") == 0) {
+        if (strcmp(command, "exit") == 0) {
 
-            break;  // Quit the program
+            break;  // Exit the program
         }
         else if (strcmp(command, "l") == 0) {
 
@@ -189,11 +185,21 @@ int main(int argc, char** argv) {
                 continue;
             }
             // Call the printPartZip function to print participants for the specified ZIP code
-            printPartZip(zipCodeList, zipCodeToPrint);
+            if(zipCodeList != NULL){
+                printPartZip(zipCodeList, zipCodeToPrint);
+            } else{
+                printf("No one has voted.\n");
+            }
+                
         }
         else if (strcmp(command, "o") == 0) {
             // Print all zip codes in descending order
-            printZIPListDescending(zipCodeList);
+            if(zipCodeList!=NULL){
+                printZIPListDescending(zipCodeList);
+            } else{
+                printf("No one has voted.\n");
+            }
+                
         }
         else {
 
@@ -202,6 +208,8 @@ int main(int argc, char** argv) {
         printf("Enter a new command : ");
     }
 
+    freeZipCodeList(zipCodeList);
+    freeHashTable(hashTable);
 
     return 0;
 }

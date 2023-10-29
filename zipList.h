@@ -10,9 +10,11 @@
 
 struct ZipCodeNode {
     int zip_code;
+    int count;
     struct ParticipantArrayNode* participants;
     struct ZipCodeNode* next;
     struct ZipCodeNode* prev;
+    
 };
 
 struct ParticipantArrayNode {
@@ -28,5 +30,6 @@ void changeVote(struct ZipCodeNode* zipCodeList, struct LinearHashTable* hashTab
 void printZIPList(struct ZipCodeNode* zipCodeList);
 void printPartZip(struct ZipCodeNode* zipCodeList, int zipCode);
 void printZIPListDescending(struct ZipCodeNode* zipCodeList);
+void freeZipCodeList(struct ZipCodeNode* zipCodeList);
 
 #endif
