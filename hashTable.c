@@ -47,6 +47,7 @@ struct Participant* getParticipant(struct LinearHashTable* hashTable, int key){
                 return &bucket->participant[i];  // Found the participant
             }
         }
+
     } else{
         // Check all the overflow buckets
         for (int i = 0; i < bucket->of_count; i++) {
@@ -54,6 +55,12 @@ struct Participant* getParticipant(struct LinearHashTable* hashTable, int key){
                 if (bucket->overflowBucket[i].participant[j].PIN == key) {
                     return &bucket->overflowBucket[i].participant[j];  // Found the participant
                 }
+            }
+        }
+
+        for (int i = 0; i < bucket->count; i++) {
+            if (bucket->participant[i].PIN == key) {
+                return &bucket->participant[i];  // Found the participant
             }
         }
     }
@@ -170,6 +177,18 @@ void insert(struct LinearHashTable* table, int key, const char* last_name, const
             return;
         }
     }
+    if(bucket->overflowBucket!=NULL){
+        for(int i=0; i<bucket->of_count; i++){
+            for(int j=0; j<bucket->overflowBucket[i].count; j++){
+                if(bucket->overflowBucket[i].participant[j].PIN = key){
+                    // Key already exists, update the values 
+                    printf("Participant with this PIN already exists. Data was kept the same\n");
+                    return;
+                }
+            }
+        }
+    }
+        
 
     //Check if the main Bucket is full
     if(bucket->count >= table->max_keys_per_bucket){

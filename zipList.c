@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 
 
 void addToList(struct ZipCodeNode* zipCodeNode, struct Participant* participant) {
@@ -126,7 +125,7 @@ void printPartZip(struct ZipCodeNode* zipCodeList, int zipCode) {
 void printZIPListDescending(struct ZipCodeNode* zipCodeList) {
     // Traverse the list to find the highest zip code
     struct ZipCodeNode* currentZipCodeNode = zipCodeList;
-    int highestZipCode = INT_MIN;
+    int highestZipCode = 0;
     while (currentZipCodeNode != NULL) {
         if (currentZipCodeNode->zip_code > highestZipCode) {
             highestZipCode = currentZipCodeNode->zip_code;
@@ -135,7 +134,7 @@ void printZIPListDescending(struct ZipCodeNode* zipCodeList) {
     }
 
     // Print zip codes from highest to smallest
-    for (int zipCode = highestZipCode; zipCode >= 0; zipCode--) {
+    for (int zipCode = highestZipCode; zipCode > 0; zipCode--) {
         currentZipCodeNode = zipCodeList;
         while (currentZipCodeNode != NULL) {
             if (currentZipCodeNode->zip_code == zipCode) {

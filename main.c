@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 #include "hashTable.h"
 #include "zipList.h"
 
@@ -157,7 +156,7 @@ int main(int argc, char** argv) {
 
             struct Participant fileParticipant;
 
-            while (fscanf(keyFile, "%d %s %s %d", &fileParticipant.PIN, fileParticipant.last_name, fileParticipant.first_name, &fileParticipant.zip_code) == 4) {
+            while (fscanf(keyFile, "%d", &fileParticipant.PIN) == 1) {
                 // Change the vote to 'Y' for each participant
                 changeVote(zipCodeList, hashTable, fileParticipant.PIN);
             }
