@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
             // Call the changeVote function to change the vote of the participant
             changeVote(zipCodeList, hashTable, pin);
         }
-        else if (strcmp(command, "bv") == 0) {
+         else if (strcmp(command, "bv") == 0) {
             char filename[MAX_FILENAME_LENGTH];
 
             if (scanf("%s", filename) != 1) {
@@ -156,14 +156,13 @@ int main(int argc, char** argv) {
 
             struct Participant fileParticipant;
 
-            while (fscanf(keyFile, "%d", &fileParticipant.PIN) == 1) {
+            while (fscanf(keyFile, "%d %s %s %d", &fileParticipant.PIN, fileParticipant.last_name, fileParticipant.first_name, &fileParticipant.zip_code) == 4) {
                 // Change the vote to 'Y' for each participant
-                changeVote(zipCodeList, hashTable, fileParticipant.PIN);
+                changeVote(zipCodeList,hashTable, fileParticipant.PIN);
             }
 
             fclose(keyFile);
-        }
-        else if (strcmp(command, "v") == 0) {
+        }else if (strcmp(command, "v") == 0) {
             
             // Print the number of participants who have voted
             printf("Number of participants who have voted: %d\n", hashTable->vote_count);

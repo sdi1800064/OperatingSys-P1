@@ -162,6 +162,7 @@ void split(struct LinearHashTable* table){
 }
 
 void insert(struct LinearHashTable* table, int key, const char* last_name, const char* first_name, int zip_code) {
+    printf("inserting %d\n", key);
     int hashed_key = hashFunction(key, table);
     if (hashed_key<table->p){
         hashed_key = reHashFunction(key,table);
@@ -180,7 +181,7 @@ void insert(struct LinearHashTable* table, int key, const char* last_name, const
     if(bucket->overflowBucket!=NULL){
         for(int i=0; i<bucket->of_count; i++){
             for(int j=0; j<bucket->overflowBucket[i].count; j++){
-                if(bucket->overflowBucket[i].participant[j].PIN = key){
+                if(bucket->overflowBucket[i].participant[j].PIN == key){
                     // Key already exists, update the values 
                     printf("Participant with this PIN already exists. Data was kept the same\n");
                     return;
